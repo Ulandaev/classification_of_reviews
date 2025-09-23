@@ -1,16 +1,28 @@
 [project]
-name = "classification-of-reviews-project"
+name = "classification-of-reviews"
 version = "0.1.0"
 description = "classification of reviews from online store"
 authors = [
-    {name = "ulandaev.vn@phystech.edu"}
+    {name = "Vladislav Ulandaev", email = "ulandaev.vn@phystech.edu"}
 ]
 readme = "README.md"
-requires-python = ">=3.12"
-dependencies = [
-]
+requires-python = "~3.12"
 
+[tool.poetry.dependencies]
+pandas = ">=2.3.2,<3.0.0"
+torch = ">=2.8.0,<3.0.0"
+numpy = "^2.3.3"
+matplotlib = "^3.10.6"
+scikit-learn = "^1.7.2"
+
+
+[tool.poetry.group.dev.dependencies]
+fire = ">=0.7.1,<0.8.0"
+ipykernel = "^5.5.0"
+dvc = "^1.11.16"
+pre-commit = "^2.10.1"
 
 [build-system]
 requires = ["poetry-core>=2.0.0,<3.0.0"]
 build-backend = "poetry.core.masonry.api"
+

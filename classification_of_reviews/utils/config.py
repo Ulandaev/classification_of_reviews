@@ -3,20 +3,55 @@ import os
 import torch
 from omegaconf import DictConfig, OmegaConf
 
+# def setup_config(cfg: DictConfig) -> DictConfig:
+#     """Setup configuration with runtime adjustments"""
+#     # Create a copy to avoid modifying the original
+#     cfg = OmegaConf.create(OmegaConf.to_container(cfg, resolve=True))
+
+#     # Set device-specific settings
+#     cfg.training.fp16 = torch.cuda.is_available()
+
+#     # Set model dtype based on hardware
+#     if torch.cuda.is_available():
+#         cfg.model.classification.torch_dtype = "float16"
+#     else:
+#         cfg.model.classification.torch_dtype = "float32"
+
+#     # Create directories
+#     os.makedirs(cfg.paths.processed_data, exist_ok=True)
+#     os.makedirs(cfg.paths.models, exist_ok=True)
+#     os.makedirs(cfg.paths.results, exist_ok=True)
+#     os.makedirs(cfg.paths.logs, exist_ok=True)
+
+#     return cfg
+
 
 def setup_config(cfg: DictConfig) -> DictConfig:
     """Setup configuration with runtime adjustments"""
     # Create a copy to avoid modifying the original
     cfg = OmegaConf.create(OmegaConf.to_container(cfg, resolve=True))
 
+    # Отладочная информация
+    print("Available keys in cfg.model:", list(cfg.model.keys()))
+
     # Set device-specific settings
     cfg.training.fp16 = torch.cuda.is_available()
 
     # Set model dtype based on hardware
-    if torch.cuda.is_available():
-        cfg.model.classification.torch_dtype = "float16"
+    if hasattr(cfg.model, "classification_model"):
+        print("Using classification_model configuration")
+        if torch.cuda.is_available():
+            cfg.model.classification_model.torch_dtype = "float16"
+        else:
+            cfg.model.classification_model.torch_dtype = "float32"
+    elif hasattr(cfg.model, "classification"):
+        print("Using classification configuration")
+        if torch.cuda.is_available():
+            cfg.model.classification.torch_dtype = "float16"
+        else:
+            cfg.model.classification.torch_dtype = "float32"
     else:
-        cfg.model.classification.torch_dtype = "float32"
+        print("Warning: No classification configuration found")
 
     # Create directories
     os.makedirs(cfg.paths.processed_data, exist_ok=True)

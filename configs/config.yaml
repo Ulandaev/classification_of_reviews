@@ -1,15 +1,23 @@
+# defaults:
+#   - data: labeling
+#   - data: augmentation
+#   - data: preprocessing
+#   - model: labeling_model
+#   - model: classification_model
+#   - model: lora
+#   - training: base
+#   # - training: optimizer
+#   # - training: callbacks
+#   - inference: default
+#   - _self_
+
 defaults:
-  - data: labeling
-  - data: augmentation
-  - data: preprocessing
-  - model: labeling_model
-  - model: classification_model
-  - model: lora
-  - training: base
-  - training: optimizer
-  - training: callbacks
-  - inference: default
   - _self_
+  - data: labeling
+  # - labeling: labeling
+  - model: labeling_model
+  - training: base
+  - inference: default
 
 seed: 42
 experiment_name: "review_classification"

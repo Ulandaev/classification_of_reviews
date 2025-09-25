@@ -8,8 +8,6 @@ from src.training.model_setup import setup_model
 from src.training.trainer import ReviewTrainer
 from src.utils.config import get_file_path, setup_config
 
-# from transformers import EarlyStoppingCallback
-
 
 @hydra.main(config_path="../configs", config_name="config", version_base="1.1")
 def main(cfg: DictConfig) -> None:
@@ -23,14 +21,13 @@ def main(cfg: DictConfig) -> None:
     data_path = get_file_path(cfg, "augmented_train")
     train_dataset, val_dataset, text_column = trainer.load_and_prepare_data(data_path)
 
-    # Setup PEFT and model
+    # PEFT
     # peft_config = setup_peft_config(cfg)
     model, tokenizer = setup_model(cfg, len(trainer.id_to_label))
 
-    # Training arguments
     training_args = trainer.create_training_arguments()
 
-    # Train model
+    # обуч
     trained_trainer = trainer.train(
         train_dataset,
         val_dataset,
@@ -41,7 +38,7 @@ def main(cfg: DictConfig) -> None:
         cfg.model.classification.peft_method,
     )
 
-    # Save model and mappings
+    # сохранение модели и маппинг
     trained_trainer.save_model()
     tokenizer.save_pretrained(training_args.output_dir)
 

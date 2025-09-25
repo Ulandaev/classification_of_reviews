@@ -1,0 +1,7 @@
+inference:
+  batch_size: 32
+  max_length: 256
+# inference:
+#   batch_size: 32
+#   max_length: 256
+#   model_path: "./trained_model"

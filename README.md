@@ -114,16 +114,17 @@ mlflow server --host 127.0.0.1 --port 8080
 
 Перед обучением необходимо разметить исходные данные с помощью LLM:
 
-````bash
+```bash
 # Запуск  разметки
 python scripts/label_data.py
 ```
 
-
 **Входные данные:**
+
 - `data/train.csv` - CSV файл с колонкой `text` содержащей отзывы
 
 **Выходные данные:**
+
 - `data/labeled_train.csv` - размеченные данные
 - `data/augmented_train.csv` - аугментированные данные
 
@@ -134,11 +135,12 @@ python scripts/label_data.py
 python scripts/train.py
 ```
 
-
 **Выходные данные:**
+
 - размеченные на тесте данные
 
 **Конфигурируемые параметры:**
+
 - `training.num_train_epochs` - количество эпох
 - `training.learning_rate` - скорость обучения
 - `training.per_device_train_batch_size` - размер батча
@@ -158,7 +160,6 @@ mlflow ui --host 127.0.0.1 --port 8080
 - Weighted F1-score
 - Accuracy
 - Loss curves
-
 
 ### Формат входных данных
 
@@ -198,4 +199,3 @@ text,predicted_category
 ## Контакты
 
 - почта - ulandaev.vn@phystech.edu
-````

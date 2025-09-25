@@ -151,15 +151,13 @@ python scripts/train.py
 ```bash
 # Открытие MLflow UI
 mlflow ui --host 127.0.0.1 --port 8080
-````
+```
 
 Метрики:
 
 - Weighted F1-score
 - Accuracy
 - Loss curves
-
-````
 
 
 ### Формат входных данных

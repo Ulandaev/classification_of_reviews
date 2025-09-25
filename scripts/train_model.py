@@ -11,10 +11,10 @@ from src.utils.config import get_file_path, setup_config
 
 @hydra.main(config_path="../configs", config_name="config", version_base="1.1")
 def main(cfg: DictConfig) -> None:
-    # Setup configuration
+    # конфиги
     cfg = setup_config(cfg)
 
-    # Initialize trainer
+    # трейнер
     trainer = ReviewTrainer(cfg)
 
     # Load and prepare data

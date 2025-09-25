@@ -19,11 +19,11 @@ class ReviewTrainer:
         text_column = self.cfg.data.labeling.columns.text
         label_column = self.cfg.data.labeling.columns.label
 
-        # Filter valid categories
+        # фильрация валидных категорий
         df = df[df[label_column].isin(self.cfg.data.labeling.categories)]
         unique_categories = sorted(df[label_column].unique())
 
-        # Create label mappings
+        # маппинг
         self.label_to_id = {label: i for i, label in enumerate(unique_categories)}
         self.id_to_label = {i: label for i, label in enumerate(unique_categories)}
 

@@ -34,10 +34,8 @@ def setup_config(cfg: DictConfig) -> DictConfig:
     # Отладочная информация
     print("Available keys in cfg.model:", list(cfg.model.keys()))
 
-    # Set device-specific settings
     cfg.training.fp16 = torch.cuda.is_available()
 
-    # Set model dtype based on hardware
     if hasattr(cfg.model, "classification_model"):
         print("Using classification_model configuration")
         if torch.cuda.is_available():

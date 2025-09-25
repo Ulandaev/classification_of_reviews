@@ -1,0 +1,10 @@
+tokenization:
+  max_length: 256
+  padding: false
+  truncation: true
+  return_tensors: null
+
+train_test_split:
+  test_size: 0.2
+  random_state: 42
+  shuffle: true

@@ -1,50 +1,48 @@
-import numpy as np
 import pandas as pd
-from sklearn.model_selection import train_test_split
-from sklearn.metrics import f1_score, classification_report
-from transformers import TrainingArguments, Trainer, DataCollatorWithPadding
 from datasets import Dataset
-import json
-import torch
+from sklearn.model_selection import train_test_split
+from transformers import TrainingArguments
 
-from .metrics import compute_metrics
-from ..utils.config import get_file_path
+# from ..utils.config import get_file_path
 from ..utils.helpers import set_seed
+
+# from .metrics import compute_metrics
+
 
 class ReviewTrainer:
     def __init__(self, cfg):
         self.cfg = cfg
         set_seed(cfg.seed)
-    
+
     def load_and_prepare_data(self, data_path):
         df = pd.read_csv(data_path)
         text_column = self.cfg.data.labeling.columns.text
         label_column = self.cfg.data.labeling.columns.label
-        
+
         # Filter valid categories
         df = df[df[label_column].isin(self.cfg.data.labeling.categories)]
         unique_categories = sorted(df[label_column].unique())
-        
+
         # Create label mappings
         self.label_to_id = {label: i for i, label in enumerate(unique_categories)}
         self.id_to_label = {i: label for i, label in enumerate(unique_categories)}
-        
-        df['labels'] = df[label_column].map(self.label_to_id)
-        
+
+        df["labels"] = df[label_column].map(self.label_to_id)
+
         # Split data
         train_df, val_df = train_test_split(
-            df, 
+            df,
             test_size=self.cfg.data.preprocessing.train_test_split.test_size,
             random_state=self.cfg.data.preprocessing.train_test_split.random_state,
-            shuffle=self.cfg.data.preprocessing.train_test_split.shuffle
+            shuffle=self.cfg.data.preprocessing.train_test_split.shuffle,
         )
-        
+
         return (
-            Dataset.from_pandas(train_df[[text_column, 'labels']]),
-            Dataset.from_pandas(val_df[[text_column, 'labels']]),
-            text_column
+            Dataset.from_pandas(train_df[[text_column, "labels"]]),
+            Dataset.from_pandas(val_df[[text_column, "labels"]]),
+            text_column,
         )
-    
+
     def tokenize_data(self, tokenizer, datasets, text_column):
         def tokenize_function(examples):
             return tokenizer(
@@ -52,19 +50,17 @@ class ReviewTrainer:
                 padding=self.cfg.data.preprocessing.tokenization.padding,
                 truncation=self.cfg.data.preprocessing.tokenization.truncation,
                 max_length=self.cfg.data.preprocessing.tokenization.max_length,
-                return_tensors=self.cfg.data.preprocessing.tokenization.return_tensors
+                return_tensors=self.cfg.data.preprocessing.tokenization.return_tensors,
             )
-        
+
         tokenized_datasets = {}
         for name, dataset in datasets.items():
             tokenized_datasets[name] = dataset.map(
-                tokenize_function,
-                batched=True,
-                remove_columns=[text_column]
+                tokenize_function, batched=True, remove_columns=[text_column]
             )
-        
+
         return tokenized_datasets
-    
+
     def create_training_arguments(self):
         return TrainingArguments(
             output_dir=self.cfg.training.output_dir,
@@ -85,5 +81,5 @@ class ReviewTrainer:
             fp16=self.cfg.training.fp16,
             dataloader_pin_memory=self.cfg.training.dataloader_pin_memory,
             report_to=self.cfg.training.report_to,
-            seed=self.cfg.seed
+            seed=self.cfg.seed,
         )

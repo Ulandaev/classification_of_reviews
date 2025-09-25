@@ -1,0 +1,14 @@
+name: "Qwen/Qwen2-1.5B-Instruct"
+
+quantization:
+  load_in_4bit: true
+  bnb_4bit_compute_dtype: "float16"
+
+generation:
+  max_new_tokens: 20
+  temperature: 0.1
+
+prompt_templates:
+  system: "Ты классификатор отзывов. Классифицируй отзыв по категории товара: ${data.labeling.categories}. Выбери только одну категорию. Если отзыв не относится к товару, выбери 'нет товара'."
+  user_template: "Отзыв: {review}"
+  assistant_template: "Категория: {category}"

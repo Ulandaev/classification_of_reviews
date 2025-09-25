@@ -1,0 +1,23 @@
+defaults:
+  - data: labeling
+  - data: augmentation
+  - data: preprocessing
+  - model: labeling_model
+  - model: classification_model
+  - model: lora
+  - training: base
+  - training: optimizer
+  - training: callbacks
+  - inference: default
+  - _self_
+
+seed: 42
+experiment_name: "review_classification"
+version: "1.0.0"
+
+paths:
+  raw_data: "data/raw"
+  processed_data: "data/processed"
+  models: "models"
+  results: "results"
+  logs: "logs"

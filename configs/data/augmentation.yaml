@@ -1,0 +1,6 @@
+# @package _global_.data.augmentation
+
+paraphrase:
+  max_new_tokens: 100
+  temperature: 0.7
+  system_prompt: "Ты помощник по перефразировке. Перефразируй отзыв, сохраняя исходный смысл."
